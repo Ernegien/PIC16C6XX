@@ -1,0 +1,111 @@
+#########################################################################################################
+##	This is an example .gitignore file for Vivado, please treat it as an example as 
+##	it might not be complete. In addition, XAPP 1165 should be followed.
+#########################################################################################################
+#########
+#Exclude all
+#########
+*
+!*/
+!.gitignore
+###########################################################################
+##	VIVADO
+###########################################################################
+#########
+#Source files:
+#########
+#Do NOT ignore VHDL, Verilog, block diagrams or EDIF files.
+!*.vhd
+!*.v
+!*.bd
+!*.edif
+#########
+#IP files
+#########
+#.xci: synthesis and implemented not possible - you need to return back to the previous version to generate output products
+#.xci + .dcp: implementation possible but not re-synthesis
+#*.xci(www.spiritconsortium.org)
+!*.xci
+#*.dcp(checkpoint files)
+!*.dcp
+!*.vds
+!*.pb
+#All bd comments and layout coordinates are stored within .ui
+!*.ui
+!*.ooc
+#########
+#System Generator
+#########
+!*.mdl
+!*.slx
+!*.bxml
+#########
+#Simulation logic analyzer
+#########
+!*.wcfg
+!*.coe
+#########
+#MIG
+#########
+!*.prj
+!*.mem
+#########
+#Project files
+#########
+#XPR  +  *.XML ? XPR (Files are merged into a single XPR file for 2014.1 version)
+#Do NOT ignore *.xpr files
+!*.xpr
+#Include *.xml files for 2013.4 or earlier version
+!*.xml
+#########
+#Constraint files
+#########
+#Do NOT ignore *.xdc files
+!*.xdc
+#########
+#TCL - files
+#########
+!*.tcl
+#########
+#Journal - files
+#########
+!*.jou
+#########
+#Reports
+#########
+!*.rpt
+!*.txt
+!*.vdi
+#########
+#C-files
+#########
+!*.c
+!*.h
+!*.elf
+!*.bmm
+!*.xmp
+#########
+#Misc
+#########
+# ignore runs, cache, sdk workspace, Xilinx generated files, archives, and .dsa files in project folder 
+*.runs/
+*.sim/
+*.cache/
+*.sdk/
+*.ip_user_files/
+*/.Xil/
+*.log
+*.str
+*.jou
+*.dsa
+*.zip
+# Also ignore the block diagram files, except those that are required to regenerate the ip. 
+# NOTE: This method of block diagram version control requires that the project be built at least once in 
+#       the current version of Vivado before opening in a newer version
+*.srcs/sources_1/bd/*/*
+!*.srcs/sources_1/bd/*/ui/
+!*.srcs/sources_1/bd/*/*.bd
+!*.srcs/sources_1/bd/*/hdl/
+*.srcs/sources_1/bd/*/hdl/*
+!*.srcs/sources_1/bd/*/hdl/*_wrapper.vhd
+!*.srcs/sources_1/bd/*/hdl/*_wrapper.v
