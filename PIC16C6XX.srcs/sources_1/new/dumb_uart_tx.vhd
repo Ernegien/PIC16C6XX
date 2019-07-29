@@ -26,17 +26,13 @@ use IEEE.STD_LOGIC_1164.ALL;
 -- arithmetic functions with Signed or Unsigned values
 --use IEEE.NUMERIC_STD.ALL;
 
--- Uncomment the following library declaration if instantiating
--- any Xilinx leaf cells in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
-
 entity dumb_uart_tx is
 --  Port ( );
 end dumb_uart_tx;
 
 architecture Behavioral of dumb_uart_tx is
-
+-- 8 data bits, 1 stop bit, no parity
+-- TODO: clk (baud), rst, is_ready (out), 16-bit data buffer (internal), data (in, Z for no input), tx (out)
 begin
 
 
