@@ -24,7 +24,7 @@ use IEEE.NUMERIC_STD.ALL;
 
 use work.pic_package.all;
 
--- assumes it's always powered on except during setup state (during init or reset)
+-- assumes it's always powered on except during reset state
 
 -- https://web.archive.org/web/20190728230058/http://ww1.microchip.com/downloads/en/DeviceDoc/30605D.pdf
 entity pic16c6xx is
@@ -38,28 +38,22 @@ Port (
     pic_clk : out       STD_LOGIC := '0';
     pic_vdd : out       STD_LOGIC := '0';
     pic_vpp : out       STD_LOGIC := '0';
-    pic_data : inout    STD_LOGIC := '0'
+    pic_data : inout    STD_LOGIC := '0';
     
-    -- TODO: should this be the caller's responsibility? will probably be easier to just internalize it...
-    -- data output from a read_data command
-    --data : out          STD_LOGIC_VECTOR (14-1 downto 0) := (others => '0'); -- TODO: DATA_WIDTH constant via package import
-    --data_available : out STD_LOGIC := '0'
+    -- indicates pic_data should be read from as it contains returned data
+    data_ready : out    STD_LOGIC := '0'
 );
 end pic16c6xx;
 
 architecture Behavioral of pic16c6xx is
     
-    signal vddEnabled, vppEnabled : std_logic := '0';   -- power states, TODO: vddReady (initially true, set to false until disabled for a certain period of time to give the chip time to power down entirely before it can be powered on again)    
+    signal vppEnabled : std_logic := '0';
 
     signal readCommandRequest, nextAddressCommandRequest : std_logic := '0';
-    signal programmingAddress : integer range 0 to 16#2007# := 0;   -- 14-bit word index
+    --signal programmingAddress : integer range 0 to 16#2007# := 0;   -- 14-bit word index, should this even be tracked here?
     
     signal picClockOutputEnabled : std_logic := '0';
     signal pic_data_buffered : STD_LOGIC := '0';
-    signal read_ready : std_logic := '0';   -- indicates whether or not data is ready to be read
-    -- TODO: data_available to indicate ready to be sent via uart
-            
-    signal data : STD_LOGIC_VECTOR (PIC_DATA_WIDTH-1 downto 0) := (others => '0');    
     
     shared variable current_state, next_state : pic_state := s_setup;
 
@@ -86,7 +80,7 @@ begin
             -- defaults unless otherwise specified
             pic_data_buffered <= 'Z';
             picClockOutputEnabled <= '0';
-            read_ready <= '0';
+            data_ready <= '0';
     
             case current_state is
             
@@ -143,7 +137,7 @@ begin
                         readDataCounter := 0;
                         current_state := s_idle;            
                     else
-                        read_ready <= '1';
+                        data_ready <= '1';  -- inform upstream data can be read this cycle
                         picClockOutputEnabled <= '1';
                         readDataCounter := readDataCounter + 1;
                     end if;
@@ -154,7 +148,7 @@ begin
                 
                     if commandCounter = PIC_COMMAND_WIDTH then
                         commandCounter := 0;
-                        programmingAddress <= programmingAddress + 1;
+                        --programmingAddress <= programmingAddress + 1;
                         current_state := s_delay;
                         next_state := s_idle; 
                     else
@@ -186,29 +180,11 @@ begin
                     
                 when s_reset =>    
                     vppEnabled <= '0';
+                    -- TODO: reset state should be held for at least 10ms before continuing with setup to give the chip enough time to fully discharge
                     current_state := s_setup;
-                    programmingAddress <= 0;
+                    --programmingAddress <= 0;
             end case;
 
-    end process;
-
-    -- reads pic data if it's ready to be received
-    process
-            variable dataCounter : integer range 0 to PIC_DATA_WIDTH := 0;
-        begin
-
-            wait until falling_edge(clk);
-
-            if read_ready = '0' or dataCounter = PIC_DATA_WIDTH then
-                dataCounter := 0;
-            else
-                -- TODO: read directly into uart? should probably run uart at full clock speed and divide inside for target baud rate
-                data(dataCounter) <= '1';   -- pic_data
-                dataCounter := dataCounter + 1;
-            end if;
-            
-            -- TODO: set another state signal when data (byte) is ready to be sent via uart
-            
     end process;
 
     -- output signal drivers

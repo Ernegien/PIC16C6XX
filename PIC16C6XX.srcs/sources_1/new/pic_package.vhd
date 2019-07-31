@@ -62,7 +62,7 @@ package pic_package is
     
     component clock_divider is
     GENERIC (
-        CONSTANT CLK_FREQ : integer;  -- the input clock frequency
+        CONSTANT clk_freq : integer;  -- the input clock frequency
         CONSTANT target_freq : integer);       -- the target divided clock frequency
         Port (
                 clk 		  : in  STD_LOGIC; -- the input clock
@@ -80,7 +80,9 @@ package pic_package is
                 pic_clk : out       STD_LOGIC := '0';
                 pic_vdd : out       STD_LOGIC := '0';
                 pic_vpp : out       STD_LOGIC := '0';
-                pic_data : inout    STD_LOGIC := '0');
+                pic_data : inout    STD_LOGIC := '0';
+                
+                data_ready : out    STD_LOGIC := '0');
     end component pic16c6xx;
     
 end package pic_package;

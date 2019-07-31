@@ -50,6 +50,7 @@ architecture Behavioral of pic_reader is
     signal clk_pic, clk_btn, clk_uart : std_logic := '0';
     signal readCommandRequest, nextAddressCommandRequest, reset : std_logic := '0';
     signal current_command : pic_command := s_none;
+    signal data_ready : std_logic := '0';
     
 begin
 
@@ -108,6 +109,6 @@ begin
         port map (clk_btn, btn_one, nextAddressCommandRequest, OPEN);
 
     pic_test: pic16c6xx
-        port map (clk_pic, reset, current_command, pic_clk, pic_vdd, pic_vpp, pic_data);
+        port map (clk_pic, reset, current_command, pic_clk, pic_vdd, pic_vpp, pic_data, data_ready);
 
 end Behavioral;
