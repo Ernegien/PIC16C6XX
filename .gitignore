@@ -99,6 +99,8 @@
 *.jou
 *.dsa
 *.zip
+*.jpg
+*.png
 # Also ignore the block diagram files, except those that are required to regenerate the ip. 
 # NOTE: This method of block diagram version control requires that the project be built at least once in 
 #       the current version of Vivado before opening in a newer version
