@@ -34,7 +34,7 @@ create_clock -add -name sys_clk_pin -period 8.00 -waveform {0 4} [get_ports { cl
 #set_property -dict { PACKAGE_PIN D19   IOSTANDARD LVCMOS33 } [get_ports { btn[0] }]; #IO_L4P_T0_35 Sch=btn[0]
 set_property -dict { PACKAGE_PIN D20   IOSTANDARD LVCMOS33 } [get_ports btn_one]; #IO_L4N_T0_35 Sch=btn[1]
 set_property -dict { PACKAGE_PIN L20   IOSTANDARD LVCMOS33 } [get_ports btn_two]; #IO_L9N_T1_DQS_AD3N_35 Sch=btn[2]
-set_property -dict { PACKAGE_PIN L19   IOSTANDARD LVCMOS33 } [get_ports btn_three]; #IO_L9P_T1_DQS_AD3P_35 Sch=btn[3]
+set_property -dict { PACKAGE_PIN L19   IOSTANDARD LVCMOS33 } [get_ports rst]; #IO_L9P_T1_DQS_AD3P_35 Sch=btn[3]
 
 ##PmodA
 
@@ -103,7 +103,7 @@ set_property -dict { PACKAGE_PIN V17   IOSTANDARD LVCMOS33 } [get_ports { pic_vp
 set_property -dict { PACKAGE_PIN V18   IOSTANDARD LVCMOS33 } [get_ports { pic_vdd }]; #IO_L21N_T3_DQS_34 Sch=ar[9]
 set_property -dict { PACKAGE_PIN T16   IOSTANDARD LVCMOS33 } [get_ports { pic_clk }]; #IO_L9P_T1_DQS_34 Sch=ar[10]
 set_property -dict { PACKAGE_PIN R17   IOSTANDARD LVCMOS33 } [get_ports { pic_data }]; #IO_L19N_T3_VREF_34 Sch=ar[11]
-#set_property -dict { PACKAGE_PIN P18   IOSTANDARD LVCMOS33 } [get_ports { ar[12] }]; #IO_L23N_T3_34 Sch=ar[12]
+set_property -dict { PACKAGE_PIN P18   IOSTANDARD LVCMOS33 } [get_ports { uart_tx_data }]; #IO_L23N_T3_34 Sch=ar[12]
 #set_property -dict { PACKAGE_PIN N17   IOSTANDARD LVCMOS33 } [get_ports { ar[13] }]; #IO_L23P_T3_34 Sch=ar[13]
 #set_property -dict { PACKAGE_PIN Y13   IOSTANDARD LVCMOS33 } [get_ports { a }]; #IO_L20N_T3_13 Sch=a
 
